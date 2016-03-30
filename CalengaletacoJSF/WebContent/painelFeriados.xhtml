@@ -1,0 +1,146 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+
+<h:head>
+	<link href="resources/css/bootstrap.css" rel='stylesheet' />
+	<title>Calendario WEB</title>
+</h:head>
+#{feriadoBean.listarFeriados()}
+#{feriadoBean.listarFeriadosSubstitutos()}
+#{usuarioBean.verificaLogin()}
+
+<h:body>
+	<h:outputScript name="calendario_pt_BR.js" library="js" /> 
+	<h:panelGroup rendered="#{usuarioBean.usuarioLogado != null}">
+		<h:panelGroup rendered="#{usuarioBean.usuarioLogado.isadmin}">
+			<div class="panel panel-primary">
+				<div class="panel-heading">CalendÃ¡rio WEB</div>
+				<div class="container" style="width: 400px">
+					<h1>Adicionar Feriados</h1>
+					<h:form id="formAddFeriado">
+					Nome do Feriado:<h:inputText id="nome" value="#{feriadoBean.nome}"
+							required="true" styleClass="form-control" style="width: 205px"
+							pt:placeholder="Nome do Feriado" />
+					Data:<br />
+						<p:calendar pattern="dd/MM/yyyy" id="data"
+							value="#{feriadoBean.data}" required="true">
+
+						</p:calendar>
+						<h4>
+							FIXO:
+							<h:selectBooleanCheckbox value="#{feriadoBean.fixo}" id="chkFixo" />
+						</h4>
+						<h:commandButton action="#{feriadoBean.addFeriado}"
+							styleClass="btn btn-primary btn-sm" value="Adicionar Feriado">
+						</h:commandButton>
+
+					</h:form>
+					<h:form>
+						<h:commandLink action="#{feriadoBean.goToPainel}" value="Voltar" />
+					</h:form>
+				</div>
+			</div>
+		</h:panelGroup>
+
+		<h:panelGroup rendered="#{not empty feriadoBean.feriados}">
+			<h1>Listar Feriados</h1>
+			<h:form id="listarFeridos">
+				<h:dataTable var="feriado" value="#{feriadoBean.feriados}"
+					styleClass="table table-striped table-hover">
+					<h:column>
+						<f:facet name="header">ID</f:facet>
+						<h5>#{feriado.id}</h5>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Nome</f:facet>
+						<h5>#{feriado.nome}</h5>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Data</f:facet>
+						<h:outputText value="#{feriado.data}">
+							<f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Tipo</f:facet>
+						<h:panelGroup rendered="#{feriado.fixo}">
+							<h5>Fixo</h5>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{!feriado.fixo}">
+							<h5>Móvel</h5>
+						</h:panelGroup>
+						
+					</h:column>
+					<h:column>
+						<f:facet name="header">Excluir</f:facet>
+						<h:commandButton value="excluir"
+							action="#{feriadoBean.excluirFeriado(feriado)}"
+							styleClass="btn btn-primary btn-sm" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Editar</f:facet>
+						<h:commandButton value="Editar"
+							action="#{feriadoBean.goToEditarFeriado(feriado)}"
+							styleClass="btn btn-primary btn-sm" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Substituir</f:facet>
+						<h:panelGroup rendered="#{feriado.fixo}">
+							<h:commandButton value="Substituir"
+								action="#{feriadoBean.goToFeriadoSubstituto(feriado)}"
+								styleClass="btn btn-primary btn-sm" />
+						</h:panelGroup>
+					</h:column>
+				</h:dataTable>
+			</h:form>
+		</h:panelGroup>
+		<br />
+		<h:panelGroup rendered="#{not empty feriadoBean.substitutos}">
+			<h1>Listar Feriados Substitutos</h1>
+			<h:form id="formFeriadoSubstituto">
+				<h:dataTable var="substituto" value="#{feriadoBean.substitutos}"
+					styleClass="table table-striped table-hover">
+					<h:column>
+						<f:facet name="header">ID</f:facet>
+						#{substituto.id}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Nome</f:facet>
+						#{substituto.nome}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Data</f:facet>
+						<h:outputText value="#{substituto.data}">
+
+							<f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
+
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Feriado Fixo</f:facet>
+						<h:outputText value="#{substituto.feriadoFixo.data}">
+							<f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Excluir</f:facet>
+						<h:commandButton value="excluir"
+							action="#{feriadoBean.excluirFeriadoSubstituto(substituto)}"
+							styleClass="btn btn-primary btn-sm" />
+					</h:column>
+				</h:dataTable>
+			</h:form>
+		</h:panelGroup>
+	</h:panelGroup>
+
+
+
+
+</h:body>
+</html>

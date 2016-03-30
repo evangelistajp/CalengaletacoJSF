@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"> 
+
+
+<h:head>
+<link href="resources/css/bootstrap.css" rel='stylesheet' />
+</h:head>
+ #{feriadoBean.listarFeriados()}
+ #{calendarioBean.carregaCalendario(calendarioBean.dataEscolhida)}
+<h:body>
+		
+		<h:outputScript name="calendario_pt_BR.js" library="js" />
+		#{calendarioBean.dataNow}
+		<h:form id="formCalendario">
+			<p:dataTable var="data" value="#{calendarioBean.calendar}">
+				<f:facet name="header">
+					<h:commandButton value ="Prev Ano" actionListener="#{calendarioBean.anteriorAno}"/>
+					 <h:commandButton value ="Prev Mês" actionListener="#{calendarioBean.anteriorMes}"/>		
+					 Calendario Web
+           			 <h:commandButton value= "Next Mês" actionListener="#{calendarioBean.proximoMes}"/>
+           			 <h:commandButton value= "Next Ano" actionListener="#{calendarioBean.proximoAno}"/>
+        		</f:facet>
+        		
+				<p:column headerText="Data">
+            		<h:outputText value="#{data.dia}" />
+            		<h:outputText value=" / " />
+            		<h:outputText value="#{data.mes}" />
+            		<h:outputText value=" / " />
+            		<h:outputText value="#{data.ano}" />
+            		<ui:repeat var="feriado" value="#{data.feriados}">
+            			<h5>
+	            			<h:outputText value="  Feriado: " style="color:red"/>
+	            			<h:outputText value="#{feriado.nome}" style="color:red"/>
+            			</h5>
+            		</ui:repeat>
+            		<!--  #{data.anotacoes.size()}-->
+            		<ui:repeat var="anotacao" value="#{data.anotacoes}">
+            			<h5>
+            				<h:outputText value=" Anotação: " style="color:blue"/>
+            				<h:outputText value="#{anotacao.descricao}" style="color:blue"/>
+            			</h5>
+            			
+            		</ui:repeat>
+            		<ui:repeat var="substitutos" value="#{data.substitutos}">
+            			<h5>
+            				<h:outputText value=" Feriado Substituto " style="color:green"/>
+            				<h:outputText value="#{substitutos.nome}" style="color:green"/>
+            			</h5>
+              		</ui:repeat>
+            		
+       		</p:column>
+        					
+			</p:dataTable>
+
+		</h:form>
+</h:body>
+</html>

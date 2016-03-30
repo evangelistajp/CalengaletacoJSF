@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+	
+	
+
+<h:head>
+	<link href="resources/css/bootstrap.css" rel='stylesheet' />
+	<title>Calendario WEB</title>
+</h:head>
+
+<h:body>
+
+	<div class="panel panel-primary" align="center"
+		style="margin-left: 350px; margin-right: 350px; margin-top: 20px">
+		<div class="panel-heading">
+			<h4>Calendário WEB</h4>
+		</div>
+
+		<h:form id="login">
+			<h:messages></h:messages>
+			<br />
+			<h:inputText value="#{usuarioBean.email}" id="email" required="True"
+				styleClass="form-control" style="width: 250px" pt:placeholder="Email" >
+				<h:message for="email"></h:message>
+			</h:inputText>	
+			<br />
+			<h:inputSecret value="#{usuarioBean.senha}" id="senha" required="True"
+				styleClass="form-control" style="width: 250px" pt:placeholder="Senha" />
+			<br />
+			<h:commandButton value="Login" id="btn_login" action="#{usuarioBean.efetuarLogin}" 
+				styleClass="btn btn-primary btn-sm" style="width: 250px"/>
+			<br />
+		</h:form>
+		<h:form id="cadastrar">
+			<h:commandLink value="Cadastrar Usuario" action="#{usuarioBean.goToCadastrar}"/>
+		</h:form>	
+	</div>
+	<ui:include src="calendario.xhtml"></ui:include>
+</h:body>
+</html>

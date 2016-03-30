@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"> 
+
+
+<h:head>
+<link href="resources/css/bootstrap.css" rel='stylesheet' />
+	<title>Calendario WEB</title>
+</h:head>
+#{usuarioBean.verificaLogin()}
+<h:body>
+	<h:panelGroup rendered="#{usuarioBean.usuarioLogado != null}">
+		<h:panelGroup rendered="#{usuarioBean.usuarioLogado.isadmin}">
+			<h:messages></h:messages>
+			<div class="panel panel-primary">
+				<div class="panel-heading">Calendário WEB</div>
+				<h3>Admin : #{usuarioBean.usuarioLogado.nome}</h3>
+				<h:form id="formPainelAdmin">
+					<h:commandButton action="#{feriadoBean.goToPainelFeriado}" styleClass="btn btn-primary"
+						value="Painel Feriado">
+					</h:commandButton>
+					<h:commandButton action="#{feriadoBean.goToAlteraSenha}" styleClass="btn btn-primary"
+						value="Alterar Senha">
+					</h:commandButton>
+					<h:commandButton action="#{usuarioBean.logout}" styleClass="btn btn-primary"
+						value="Logout">
+					</h:commandButton>
+				</h:form>
+			<br />
+			</div>
+				
+		</h:panelGroup>
+		<h:panelGroup rendered="#{!usuarioBean.usuarioLogado.isadmin}">
+			<h:messages></h:messages>
+			<div class="panel panel-primary">
+				<div class="panel-heading">Calendário WEB</div>
+				<h3>Usuário : #{usuarioBean.usuarioLogado.nome}</h3>
+				<h:form id="formPainelUser">
+					<h:commandButton action="#{anotacaoBean.goToPainelAnotacao}" styleClass="btn btn-primary"
+						value="Painel Anotação">
+					</h:commandButton>
+					<h:commandButton action="#{usuarioBean.excluirUser}" styleClass="btn btn-primary"
+						value="Se excluir do Sistema">
+					</h:commandButton>
+					<h:commandButton action="#{usuarioBean.logout}" styleClass="btn btn-primary"
+						value="Logout">
+					</h:commandButton>
+				</h:form>
+			<br />
+			</div>
+			
+		</h:panelGroup>	
+	</h:panelGroup>
+	<br />
+	<ui:include src="calendario.xhtml"></ui:include>
+	
+
+
+</h:body>
+</html>
